@@ -1,0 +1,164 @@
+% Copyright 2022 Limitless Interactive, LLC
+
+% Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
+% associated documentation files (the "Software"), to deal in the Software without restriction, 
+% including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+% and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+% subject to the following conditions:
+
+% The above copyright notice and this permission notice shall be included in all copies or
+% substantial portions of the Software.
+
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+% NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+% WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{digitalnomad.style.modern}[2022/10/14 v1.0 modern cv style]
+
+% lengths
+\newlength{\hintscolumnwidth}
+\setlength{\hintscolumnwidth}{0.175\textwidth}
+\newlength{\separatorcolumnwidth}
+\setlength{\separatorcolumnwidth}{0.025\textwidth}
+\newlength{\maincolumnwidth}
+\newlength{\doubleitemmaincolumnwidth}
+\newlength{\listitemsymbolwidth}
+\settowidth{\listitemsymbolwidth}{\listitemsymbol}
+\newlength{\listitemmaincolumnwidth}
+\newlength{\listdoubleitemmaincolumnwidth}
+
+\renewcommand*{\recomputelengths}{
+%   \setlength{\quotewidth}{0.65\textwidth}%
+  % main lenghts
+  \setlength{\maincolumnwidth}{\textwidth-\separatorcolumnwidth-\hintscolumnwidth}%
+  % listitem lengths
+  \setlength{\listitemmaincolumnwidth}{\maincolumnwidth-\listitemsymbolwidth}%
+  % doubleitem lengths
+  \setlength{\doubleitemmaincolumnwidth}{\maincolumnwidth-\hintscolumnwidth-\separatorcolumnwidth-\separatorcolumnwidth}%
+  \setlength{\doubleitemmaincolumnwidth}{0.5\doubleitemmaincolumnwidth}%
+  % listdoubleitem lengths
+  \setlength{\listdoubleitemmaincolumnwidth}{\maincolumnwidth-\listitemsymbolwidth-\separatorcolumnwidth-\listitemsymbolwidth}%
+  \setlength{\listdoubleitemmaincolumnwidth}{0.5\listdoubleitemmaincolumnwidth}%
+  % fancyhdr lengths
+  \renewcommand{\headwidth}{\textwidth}%
+  % regular lengths
+  \setlength{\parskip}{0\p@}
+}
+
+% fonts
+\renewcommand*{\fontfname}{\fontsize{36}{36}\mdseries\upshape}
+\renewcommand*{\fonttitle}{\mdseries\slshape}
+\renewcommand*{\fontsection}{\Large\mdseries\upshape}
+\renewcommand*{\fontsubsection}{\large\mdseries\upshape}
+\renewcommand*{\fonthint}{}
+\renewcommand*{\fontaccent}{\footnotesize\bfseries}
+\renewcommand*{\fontdetails}{\small\mdseries\slshape}
+
+
+% styles
+\renewcommand*{\stylename}[1]{{\fontfname\textcolor{color0}{#1}}}
+\renewcommand*{\styletitle}[1]{{\fonttitle\textcolor{color2}{#1}}}
+\renewcommand*{\stylesection}[1]{{\fontsection\textcolor{color1}{#1}}}
+\renewcommand*{\stylesubsection}[1]{{\fontsubsection\textcolor{color1}{#1}}}
+\renewcommand*{\stylehint}[1]{{\fonthint\textcolor{color0}{#1}}}
+\renewcommand*{\styleaccent}[1]{{\fontaccent\textcolor{color1}{#1}}}
+\renewcommand*{\styledetails}[1]{{\fontdetails\textcolor{color1}{#1}}}
+
+
+% icons
+\renewcommand*{\iconemail}{\faEnvelopeO}
+\renewcommand*{\iconphone}{\faPhone}
+\renewcommand*{\iconmobile}{\faBattery[1]}
+\renewcommand*{\iconfax}{\faFax}
+\renewcommand*{\iconcalendar}{\faCalendar}
+\renewcommand*{\iconrepo}{\faGithub}
+\renewcommand*{\iconweb}{\faExternalLink}
+\renewcommand*{\iconsteam}{\faSteam}
+
+% header
+
+\renewcommand*{\makeheader}{%
+    \recomputelengths%
+    \begin{minipage}[b]{\textwidth}%
+        \begin{multicols}{2}%
+            \raggedright%
+            \stylename{\@firstname\ \@lastname}%
+            \ifthenelse{\equal{\@title}{}}{}{\\[.25em]\styletitle{\@title}}%
+            \columnbreak%
+            \fontdetails\color{color2}%
+            \begin{wraptable}{htR!}{.7\linewidth}%
+                \begin{tabular}[t]{r c l}%
+                    \ifthenelse{\isundefined{\@email}}{}{Email~ & \iconemail & ~\mailto{\@email}{\@emailtext} \\}%
+                    \ifthenelse{\isundefined{\@phone}}{}{Voice~ & \iconphone & ~\tel{\@phone}{\@phonetext} \\}%
+                    \ifthenelse{\isundefined{\@mobile}}{}{SMS~ & \iconmobile & ~\tel{\@mobile}{\@mobiletext} \\}%
+                    \ifthenelse{\isundefined{\@calendar}}{}{Schedule~ & \iconcalendar & ~\http{\@calendar}{\@calendartext} \\}%
+                    \ifthenelse{\isundefined{\@repo}}{}{Repo~ & \iconrepo & ~\http{\@repo}{\@repotext} \\}%
+                    \ifthenelse{\isundefined{\@web}}{}{Website~ & \iconweb & ~\http{\@web}{\@webtext} \\}%
+                    \ifthenelse{\isundefined{\@steam}}{}{Steam~ & \iconsteam & ~\http{\@steam}{\@steamtext} \\}%
+                \end{tabular}%
+            \end{wraptable}%
+        \end{multicols}%
+        % \hfill
+        % \par
+    \end{minipage}%
+}
+
+% footer
+
+
+% sections
+\newlength{\baseletterheight}
+\settoheight{\baseletterheight}{\stylesection{o}}
+\setlength{\baseletterheight}{\baseletterheight-0.35ex}
+
+\renewcommand*{\section}[1]{
+    \par\addvspace{2.5ex}
+    \phantomsection{}
+    \addcontentsline{toc}{section}{#1}
+    \parbox[t]{\hintscolumnwidth}{\strut\raggedleft\raisebox{\baseletterheight}{\color{color1}\rule{\hintscolumnwidth}{0.35ex}}}%
+    \hspace{\separatorcolumnwidth}%
+    \parbox[t]{\maincolumnwidth}{\strut\stylesection{#1}}%
+    \par\nobreak\addvspace{1ex}\@afterheading
+}
+
+\renewcommand*{\subsection}[1]{%
+    \par\addvspace{1ex}%
+    \phantomsection{}% reset the anchor for hyperrefs
+    \addcontentsline{toc}{subsection}{#1}%
+    \begin{tabular}{@{}p{\hintscolumnwidth}@{\hspace{\separatorcolumnwidth}}p{\maincolumnwidth}@{}}%
+         \raggedleft\stylehint{} &{\strut\stylesubsection{#1}}%
+    \end{tabular}%
+    \par\nobreak\addvspace{0.5ex}\@afterheading
+}
+  
+% entries
+\renewcommand*{\jobitem}[3][.25em] {
+    \begin{tabular}{@{}p{\hintscolumnwidth}@{\hspace{\separatorcolumnwidth}}p{\maincolumnwidth}@{}}%
+        \raggedleft\stylehint{#2} &{#3}%
+   \end{tabular}%
+   \par\addvspace{#1}
+}
+
+\renewcommand*{\job}[8][.25em]{
+    \jobitem[#1]{#2}{%
+        {\bfseries#3}%
+        \ifthenelse{\equal{#4}{}}{}{, {\slshape#4}}%
+        \ifthenelse{\equal{#5}{}}{}{, #5}%
+        .\strut%
+        \ifthenelse{\equal{#6}{}}{}{\newline{\styleaccent{#6.}}}%
+        \ifthenelse{\equal{#7}{}}{}{
+            \newline{}
+            \begin{minipage}[t]{\linewidth}
+                \footnotesize#7%
+            \end{minipage}
+        }%
+        \ifthenelse{\equal{#8}{}}{}{\footnotesize#8}%
+    }
+}
+
+\renewcommand*{\jobbullet}[1]{
+    \newline\listitemsymbol{} #1
+}
